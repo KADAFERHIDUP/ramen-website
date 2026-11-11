@@ -1,12 +1,19 @@
 import { SHOP, MENU, EXTRAS, CATS, SPICY } from './data.js';
 import { MODELS } from './models.js';
+import * as api from './api.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const rupiah = n => 'Rp ' + n.toLocaleString('id-ID');
 const short = n => (n % 1000 ? (n / 1000).toFixed(1).replace('.', ',') : n / 1000) + 'rb';
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const byId = new Map([...MENU, ...EXTRAS].map(i => [i.id, i]));
+// daftar menu bisa diganti dari database kalau backend aktif
+let menuList = MENU.map(i => ({ ...i, available: true }));
+let extraList = EXTRAS.map(i => ({ ...i, available: true }));
+let byId = new Map();
+const reindex = () => { byId = new Map([...menuList, ...extraList].map(i => [i.id, i])); };
+reindex();
+const gridItems = () => menuList.filter(i => i.grid !== false);
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* penyimpanan tidak tersedia */ } },
@@ -81,44 +88,47 @@ function tagsOf(it) {
   if (it.cat.includes('pedas')) t.push('<span class="tag hot">Pedas</span>');
   if (it.cat.includes('dingin')) t.push('<span class="tag">Dingin</span>');
   if (it.model) t.push('<span class="tag d3">3D</span>');
+  if (!it.available) t.unshift('<span class="tag out">Habis</span>');
   return t.join('');
 }
+let sigShown = false;
 function renderSignature() {
-  $('#sig-grid').innerHTML = MENU.filter(i => i.signature).map(it => `
-    <article class="sig reveal">
+  $('#sig-grid').innerHTML = menuList.filter(i => i.signature).map(it => `
+    <article class="sig reveal${sigShown ? ' in' : ''}">
       <div class="sig-img">
         <span class="price-dot"><span>${short(it.price)}<small>rupiah</small></span></span>
         <img src="${it.img}" alt="${esc(it.name)}" width="720" height="720" loading="lazy">
       </div>
       <h3 class="sig-name">${esc(it.name)}</h3>
       <p>${esc(it.desc)}</p>
-      <button class="btn btn-yellow btn-sm" type="button" data-add="${it.id}">+ Tambah ke keranjang</button>
+      <button class="btn btn-yellow btn-sm" type="button" data-add="${it.id}" ${it.available ? '' : 'disabled'}>${it.available ? '+ Tambah ke keranjang' : 'Habis hari ini'}</button>
     </article>`).join('');
 }
 let cat = 'semua';
+const catCount = id => id === 'semua' ? gridItems().length : gridItems().filter(i => i.cat.includes(id)).length;
+const visibleCats = () => CATS.filter(c => catCount(c.id) > 0);
 function renderChips() {
-  $('#chips').innerHTML = CATS.map(c => {
-    const n = c.id === 'semua' ? MENU.length : MENU.filter(i => i.cat.includes(c.id)).length;
-    return `<button class="chip" type="button" role="tab" data-cat="${c.id}" aria-selected="${c.id === cat}">${c.label}<small>${n}</small></button>`;
-  }).join('');
+  if (!visibleCats().some(c => c.id === cat)) cat = 'semua';
+  $('#chips').innerHTML = visibleCats().map(c =>
+    `<button class="chip" type="button" role="tab" data-cat="${c.id}" aria-selected="${c.id === cat}">${c.label}<small>${catCount(c.id)}</small></button>`).join('');
 }
 function renderMenu() {
-  const list = cat === 'semua' ? MENU : MENU.filter(i => i.cat.includes(cat));
+  const list = cat === 'semua' ? gridItems() : gridItems().filter(i => i.cat.includes(cat));
   $('#menu-grid').innerHTML = list.length ? list.map((it, k) => `
-    <article class="item" style="animation-delay:${Math.min(k, 8) * 40}ms">
+    <article class="item${it.available ? '' : ' sold'}" style="animation-delay:${Math.min(k, 8) * 40}ms">
       <div class="tags">${tagsOf(it)}</div>
       <div class="item-img"><img src="${it.img}" alt="${esc(it.name)}" width="720" height="720" loading="lazy"></div>
       <h3>${esc(it.name)}</h3>
       <p>${esc(it.desc)}</p>
       ${it.model ? `<button class="view3d" type="button" data-view="${it.model}">Lihat dalam 3D</button>` : ''}
-      <div class="item-row"><span class="item-price">${rupiah(it.price)}</span><button class="add" type="button" data-add="${it.id}" aria-label="Tambah ${esc(it.name)} ke keranjang">+</button></div>
+      <div class="item-row"><span class="item-price">${rupiah(it.price)}</span><button class="add" type="button" data-add="${it.id}" aria-label="Tambah ${esc(it.name)} ke keranjang" ${it.available ? '' : 'disabled'}>+</button></div>
     </article>`).join('') : '<p class="empty-note">Belum ada menu di kategori ini.</p>';
 }
 function renderExtras() {
-  const groups = [...new Set(EXTRAS.map(e => e.group))];
+  const groups = [...new Set(extraList.map(e => e.group))];
   $('#extras').innerHTML = groups.map(g => `
-    <div class="extra-box"><h3>${g}</h3><ul class="extra-list">${EXTRAS.filter(e => e.group === g).map(e => `
-      <li><span>${esc(e.name)}</span><b>${rupiah(e.price)}</b><button class="add" type="button" data-add="${e.id}" aria-label="Tambah ${esc(e.name)}">+</button></li>`).join('')}
+    <div class="extra-box"><h3>${esc(g)}</h3><ul class="extra-list">${extraList.filter(e => e.group === g).map(e => `
+      <li class="${e.available ? '' : 'sold'}"><span>${esc(e.name)}${e.available ? '' : ' <em>(habis)</em>'}</span><b>${rupiah(e.price)}</b><button class="add" type="button" data-add="${e.id}" aria-label="Tambah ${esc(e.name)}" ${e.available ? '' : 'disabled'}>+</button></li>`).join('')}
     </ul></div>`).join('');
 }
 function setupMenu() {
@@ -129,7 +139,7 @@ function setupMenu() {
   });
   $('#chips').addEventListener('keydown', e => {
     if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
-    const ids = CATS.map(c => c.id), i = ids.indexOf(cat) + (e.key === 'ArrowRight' ? 1 : -1);
+    const ids = visibleCats().map(c => c.id), i = ids.indexOf(cat) + (e.key === 'ArrowRight' ? 1 : -1);
     cat = ids[(i + ids.length) % ids.length]; renderChips(); renderMenu(); $(`[data-cat="${cat}"]`).focus();
   });
 }
@@ -140,6 +150,7 @@ const lineKey = l => `${l.id}|${l.level ?? ''}`;
 function saveCart() { store.set('kumo-cart', cart); }
 function addToCart(id, level) {
   const it = byId.get(id); if (!it) return;
+  if (!it.available) { toast(`Maaf, ${it.name} sedang habis.`); return; }
   const lv = level !== undefined ? level : (it.spicy ?? null);
   const found = cart.find(l => l.id === id && (l.level ?? null) === lv);
   if (found) found.qty++; else cart.push({ id, qty: 1, level: lv });
@@ -173,6 +184,7 @@ function setupCart() {
   const dlg = $('#cart'), form = $('#cart-form');
   const saved = store.get('kumo-buyer', {});
   if (saved.name) form.name.value = saved.name;
+  if (saved.phone) form.phone.value = saved.phone;
   if (saved.address) form.address.value = saved.address;
   const syncMode = () => {
     const mode = form.mode.value;
@@ -194,17 +206,40 @@ function setupCart() {
     const s = e.target.closest('[data-level]'); if (!s) return;
     cart[+s.dataset.level].level = +s.value; mergeCart(); saveCart(); renderCart();
   });
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const err = $('#cart-error'); err.hidden = true;
     $$('[aria-invalid]', form).forEach(x => x.removeAttribute('aria-invalid'));
-    const name = form.name.value.trim(), mode = form.mode.value, address = form.address.value.trim();
+    const name = form.name.value.trim(), phone = form.phone.value.trim(), mode = form.mode.value, address = form.address.value.trim();
     const bad = [];
     if (!cart.length) bad.push('keranjang masih kosong');
     if (!name) { bad.push('isi nama pemesan'); form.name.setAttribute('aria-invalid', 'true'); }
+    if (phone.replace(/\D/g, '').length < 9) { bad.push('isi nomor WhatsApp'); form.phone.setAttribute('aria-invalid', 'true'); }
     if (mode === 'Diantar' && address.length < 6) { bad.push('isi alamat antar'); form.address.setAttribute('aria-invalid', 'true'); }
     if (bad.length) { err.textContent = 'Sebelum mengirim: ' + bad.join(', ') + '.'; err.hidden = false; $('[aria-invalid]', form)?.focus(); return; }
-    store.set('kumo-buyer', { name, address });
+    store.set('kumo-buyer', { name, phone, address });
+
+    if (api.online()) {
+      const btn = $('button[type=submit]', form); btn.disabled = true; btn.textContent = 'Menyimpan pesanan…';
+      try {
+        const res = await api.order({
+          items: cart.map(l => ({ id: l.id, qty: l.qty, level: l.level ?? null })),
+          name, phone, mode: MODE_KEY[mode], address, pay: form.pay.value, note: form.note.value.trim(), website: form.website.value,
+        });
+        cart = []; saveCart(); renderCart();
+        $('#done-code').textContent = res.code;
+        $('#done-text').textContent = res.message;
+        $('#done-wa').href = res.whatsapp;
+        dlg.classList.add('done');
+        $('#done-wa').focus();
+      } catch (ex) {
+        err.textContent = ex.message; err.hidden = false;
+        if (ex.fields) Object.keys(ex.fields).forEach(k => form[k]?.setAttribute?.('aria-invalid', 'true'));
+        if (ex.status === 409) loadMenu();
+      } finally { btn.disabled = false; btn.textContent = 'Kirim pesanan lewat WhatsApp'; }
+      return;
+    }
+
     const lines = cart.map((l, i) => {
       const it = byId.get(l.id);
       const lv = l.level !== null && l.level !== undefined ? ` (pedas level ${l.level})` : '';
@@ -215,6 +250,7 @@ function setupCart() {
       `Subtotal: ${rupiah(total())}`,
       `Cara terima: ${mode}`,
       `Nama: ${name}`,
+      `No. WhatsApp: ${phone}`,
       mode === 'Diantar' ? `Alamat: ${address}` : null,
       `Bayar: ${form.pay.value}`,
       form.note.value.trim() ? `Catatan: ${form.note.value.trim()}` : null,
@@ -223,12 +259,15 @@ function setupCart() {
     openWhatsApp(msg);
     toast('Pesanan dibuka di WhatsApp. Tinggal tekan kirim.');
   });
+  dlg.addEventListener('close', () => dlg.classList.remove('done'));
   document.addEventListener('click', e => {
     const add = e.target.closest('[data-add]');
     if (add) { addToCart(add.dataset.add); add.classList.add('added'); setTimeout(() => add.classList.remove('added'), 500); }
   });
   renderCart();
 }
+
+const MODE_KEY = { 'Diantar': 'antar', 'Ambil sendiri': 'ambil', 'Makan di tempat': 'makan' };
 
 let toastTimer = 0;
 function toast(text) {
@@ -257,9 +296,9 @@ function setupReservation() {
     const t = new Date(today.date + 'T12:00:00'); t.setDate(t.getDate() + 1);
     f.date.value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`; fillTimes();
   }
-  f.addEventListener('submit', e => {
+  f.addEventListener('submit', async e => {
     e.preventDefault();
-    const err = $('#res-error'); err.hidden = true;
+    const err = $('#res-error'); err.hidden = true; $('#res-done').hidden = true;
     $$('[aria-invalid]', f).forEach(x => x.removeAttribute('aria-invalid'));
     const bad = [];
     if (!f.name.value.trim()) { bad.push('nama'); f.name.setAttribute('aria-invalid', 'true'); }
@@ -267,6 +306,22 @@ function setupReservation() {
     if (!f.date.value || f.date.value < today.date) { bad.push('tanggal'); f.date.setAttribute('aria-invalid', 'true'); }
     if (!f.time.value) { bad.push('jam'); }
     if (bad.length) { err.textContent = 'Lengkapi dulu: ' + bad.join(', ') + '.'; err.hidden = false; $('[aria-invalid]', f)?.focus(); return; }
+    if (api.online()) {
+      const btn = $('button[type=submit]', f); btn.disabled = true; btn.textContent = 'Menyimpan reservasi…';
+      try {
+        const res = await api.reserve({
+          name: f.name.value.trim(), phone: f.phone.value.trim(), date: f.date.value, time: f.time.value,
+          people: f.people.value, area: f.area.value, note: f.note.value.trim(), website: f.website.value,
+        });
+        const box = $('#res-done');
+        $('b', box).textContent = res.code; $('span', box).textContent = res.message; $('a', box).href = res.whatsapp;
+        box.hidden = false; box.scrollIntoView({ block: 'nearest' });
+        f.note.value = '';
+      } catch (ex) {
+        err.textContent = ex.message; err.hidden = false;
+      } finally { btn.disabled = false; btn.textContent = 'Kirim reservasi lewat WhatsApp'; }
+      return;
+    }
     const d = new Date(f.date.value + 'T12:00:00');
     const dateText = `${DAYS[d.getDay()]}, ${d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
     const msg = [
@@ -301,17 +356,19 @@ function setupInfo() {
 }
 
 /* ---------- 3D ---------- */
-const VIEW_ITEMS = MENU.filter(i => i.model);
-let viewer = null, current = VIEW_ITEMS[0].model, loadToken = 0;
+const viewItems = () => menuList.filter(i => i.model && MODELS[i.model]);
+let viewer = null, current = viewItems()[0].model, loadToken = 0;
 function renderTabs() {
-  $('#model-tabs').innerHTML = VIEW_ITEMS.map(it => `
+  if (!viewItems().some(i => i.model === current)) current = viewItems()[0]?.model;
+  if (!current) return;
+  $('#model-tabs').innerHTML = viewItems().map(it => `
     <button class="tab" type="button" role="tab" data-model="${it.model}" aria-selected="${it.model === current}">
       <img src="${it.img}" alt="" width="46" height="46" loading="lazy"><span>${esc(it.name)}</span><small>${short(it.price)}</small>
     </button>`).join('');
-  const it = VIEW_ITEMS.find(i => i.model === current), c = MODELS[current].credit;
+  const it = viewItems().find(i => i.model === current), c = MODELS[current].credit;
   $('#viewer-info').innerHTML = `
     <h3>${esc(it.name)}</h3><p>${esc(it.desc)}</p>
-    <div class="item-row"><span class="item-price">${rupiah(it.price)}</span><button class="btn btn-yellow btn-sm" type="button" data-add="${it.id}">+ Tambah ke keranjang</button></div>
+    <div class="item-row"><span class="item-price">${rupiah(it.price)}</span><button class="btn btn-yellow btn-sm" type="button" data-add="${it.id}" ${it.available ? '' : 'disabled'}>${it.available ? '+ Tambah ke keranjang' : 'Habis hari ini'}</button></div>
     <p class="credit">Model 3D: <a href="${c.url}" target="_blank" rel="noopener">${esc(c.title)}</a> oleh <a href="${c.authorUrl}" target="_blank" rel="noopener">${esc(c.author)}</a> (CC BY 4.0)</p>`;
   $('#stage-img').src = it.img; $('#stage-img').alt = it.name;
 }
@@ -416,6 +473,29 @@ function fitHero() {
   if (w > max) stage.style.setProperty('--fs', Math.floor(fs * max / w) + 'px');
 }
 
+/* ---------- data dari backend ---------- */
+async function loadMenu() {
+  try {
+    const rows = await api.menu();
+    const map = r => ({
+      id: r.slug, name: r.name, desc: r.description || '', price: r.price, cat: r.categories || [], spicy: r.spicy,
+      img: r.image, model: r.model && MODELS[r.model] ? r.model : null, badge: r.badge || '', signature: !!r.signature,
+      grid: r.show_in_menu !== false, available: r.available !== false, group: r.kind === 'minuman' ? 'Minuman' : 'Topping',
+    });
+    const all = rows.map(r => ({ ...map(r), kind: r.kind }));
+    menuList = all.filter(r => r.kind === 'ramen');
+    extraList = all.filter(r => r.kind !== 'ramen');
+    reindex();
+    cart = cart.filter(l => byId.has(l.id)); saveCart();
+    sigShown = $('#andalan .sec-head').classList.contains('in');
+    renderSignature(); renderChips(); renderMenu(); renderExtras(); renderCart();
+    if ($('#model-tabs').children.length) renderTabs();
+    if (!sigShown) setupReveal();
+  } catch (err) {
+    console.warn('Menu dari server gagal dimuat, memakai menu bawaan:', err.message);
+  }
+}
+
 /* ---------- mulai ---------- */
 fitHero();
 addEventListener('resize', fitHero);
@@ -427,6 +507,11 @@ setupCart();
 setupReservation();
 setupInfo();
 setupReveal();
+api.connect().then(base => {
+  if (!base) return;
+  document.body.classList.add('online');
+  loadMenu();
+});
 start3D().catch(err => {
   console.warn('3D dimatikan:', err.message);
   document.body.classList.add('no3d');

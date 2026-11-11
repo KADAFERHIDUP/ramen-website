@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Database\Seeds;
+
+use CodeIgniter\Database\Seeder;
+
+/** Menu awal, sama dengan js/data.js di frontend. Menu yang slug-nya sudah ada tidak ditimpa. */
+class MenuSeeder extends Seeder
+{
+    public function run()
+    {
+        $rows = [
+            ['slug' => 'ramen-spesial', 'kind' => 'ramen', 'name' => 'Ramen Spesial Kumo', 'description' => 'Semua yang terbaik dalam satu mangkuk: sapi iris, jamur, jagung manis, nori, dua telur, cabai, dan kuah pedas gurih.', 'price' => 49000, 'categories' => 'kuah,pedas', 'spicy' => 2, 'image' => 'img/3d/ramen-spesial.webp', 'model' => 'ramen-spesial', 'badge' => 'Paling laris', 'signature' => 0, 'show_in_menu' => 1, 'sort' => 10],
+            ['slug' => 'sapi-kimchi', 'kind' => 'ramen', 'name' => 'Ramen Sapi Kimchi', 'description' => 'Irisan sapi empuk, kimchi, sawi, dan telur ajitama di kuah merah gochujang.', 'price' => 42000, 'categories' => 'kuah,pedas', 'spicy' => 3, 'image' => 'img/menu/sapi-kimchi.webp', 'model' => null, 'badge' => null, 'signature' => 1, 'show_in_menu' => 1, 'sort' => 20],
+            ['slug' => 'miso-jagung', 'kind' => 'ramen', 'name' => 'Miso Pedas Jagung', 'description' => 'Kuah miso pedas, sapi cincang, jamur shiitake, jagung manis, dan tiga potong telur setengah matang.', 'price' => 39000, 'categories' => 'kuah,pedas', 'spicy' => 2, 'image' => 'img/menu/miso-jagung.webp', 'model' => null, 'badge' => null, 'signature' => 1, 'show_in_menu' => 1, 'sort' => 30],
+            ['slug' => 'kari-udang', 'kind' => 'ramen', 'name' => 'Ramen Kari Udang', 'description' => 'Kuah kari Jepang yang kental, udang goreng tepung, kimchi, bayam, dan telur ajitama.', 'price' => 45000, 'categories' => 'kuah', 'spicy' => 1, 'image' => 'img/menu/kari-udang.webp', 'model' => null, 'badge' => null, 'signature' => 1, 'show_in_menu' => 1, 'sort' => 40],
+            ['slug' => 'tori-paitan', 'kind' => 'ramen', 'name' => 'Tori Paitan Jamur', 'description' => 'Kuah ayam putih yang creamy, ayam panggang, jamur, dua telur rebus, ketumbar, dan wijen hitam.', 'price' => 41000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/3d/tori-paitan.webp', 'model' => 'tori-paitan', 'badge' => null, 'signature' => 0, 'show_in_menu' => 0, 'sort' => 50],
+            ['slug' => 'sapi-rempah', 'kind' => 'ramen', 'name' => 'Mi Kuah Sapi Rempah', 'description' => 'Mi beras, sapi rebus rempah, daun ketumbar, cabai rawit segar, dan kacang sangrai.', 'price' => 38000, 'categories' => 'kuah,pedas', 'spicy' => 2, 'image' => 'img/menu/sapi-rempah.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 60],
+            ['slug' => 'paitan-ayam', 'kind' => 'ramen', 'name' => 'Paitan Chashu Ayam', 'description' => 'Kuah ayam kental, chashu ayam panggang berlapis lada, telur ajitama, dan daun bawang.', 'price' => 36000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/menu/paitan-ayam.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 70],
+            ['slug' => 'shoyu-ajitama', 'kind' => 'ramen', 'name' => 'Shoyu Ajitama', 'description' => 'Kuah shoyu kemerahan, chashu ayam, telur ajitama, nori lebar, dan daun bawang.', 'price' => 33000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/3d/shoyu-ajitama.webp', 'model' => 'shoyu-ajitama', 'badge' => null, 'signature' => 0, 'show_in_menu' => 0, 'sort' => 80],
+            ['slug' => 'shoyu-nori', 'kind' => 'ramen', 'name' => 'Shoyu Nori', 'description' => 'Kuah kecap asin bening dengan nori, menma, serpihan cabai, dan telur ajitama.', 'price' => 32000, 'categories' => 'kuah,pedas', 'spicy' => 1, 'image' => 'img/menu/shoyu-nori.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 90],
+            ['slug' => 'shio-naruto', 'kind' => 'ramen', 'name' => 'Shio Naruto', 'description' => 'Kuah garam yang gurih, chashu ayam, narutomaki, bawang putih goreng, dan daun bawang.', 'price' => 34000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/menu/shio-naruto.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 100],
+            ['slug' => 'shio-bening', 'kind' => 'ramen', 'name' => 'Shio Bening Spesial', 'description' => 'Kuah garam jernih, chashu ayam, menma, bawang prei iris, nori remuk, dan dua telur.', 'price' => 37000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/menu/shio-bening.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 110],
+            ['slug' => 'nabeyaki', 'kind' => 'ramen', 'name' => 'Nabeyaki Ramen', 'description' => 'Disajikan mendidih di mangkuk tanah liat: udang tempura, ayam, jamur, wortel, dan telur yang matang di kuah.', 'price' => 48000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/menu/nabeyaki.webp', 'model' => null, 'badge' => 'Mangkuk panas', 'signature' => 0, 'show_in_menu' => 1, 'sort' => 120],
+            ['slug' => 'shoyu-klasik', 'kind' => 'ramen', 'name' => 'Shoyu Klasik', 'description' => 'Resep paling sederhana: kuah kecap asin, nori, narutomaki, menma, dan daun bawang.', 'price' => 30000, 'categories' => 'kuah', 'spicy' => 0, 'image' => 'img/menu/shoyu-klasik.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 130],
+            ['slug' => 'sayur-tomat', 'kind' => 'ramen', 'name' => 'Ramen Sayur Tomat', 'description' => 'Kuah tomat pedas tanpa daging: teratai goreng, zukini, terong, wortel, tomat ceri, dan telur.', 'price' => 35000, 'categories' => 'kuah,sayur,pedas', 'spicy' => 1, 'image' => 'img/menu/sayur-tomat.webp', 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 140],
+            ['slug' => 'hiyashi', 'kind' => 'ramen', 'name' => 'Hiyashi Ramen Dingin', 'description' => 'Mi dingin di kuah segar berisi es: udang, telur dadar iris, timun, wortel, dan jamur.', 'price' => 37000, 'categories' => 'dingin', 'spicy' => null, 'image' => 'img/menu/hiyashi.webp', 'model' => null, 'badge' => 'Segar', 'signature' => 0, 'show_in_menu' => 1, 'sort' => 150],
+            ['slug' => 'shin-bowl', 'kind' => 'ramen', 'name' => 'Shin Ramyun Big Bowl', 'description' => 'Ramen instan Korea versi mangkuk besar, kami seduh di tempat. Bisa ditambah topping.', 'price' => 24000, 'categories' => 'instan,pedas', 'spicy' => null, 'image' => 'img/3d/shin-bowl.webp', 'model' => 'shin-bowl', 'badge' => null, 'signature' => 0, 'show_in_menu' => 0, 'sort' => 160],
+            ['slug' => 'shin-cup', 'kind' => 'ramen', 'name' => 'Shin Ramyun Cup', 'description' => 'Ramen instan Korea dalam cup, diseduh di tempat. Pedasnya pedas khas Korea.', 'price' => 18000, 'categories' => 'instan,pedas', 'spicy' => null, 'image' => 'img/3d/shin-cup.webp', 'model' => 'shin-cup', 'badge' => null, 'signature' => 0, 'show_in_menu' => 0, 'sort' => 170],
+            ['slug' => 'x-telur', 'kind' => 'topping', 'name' => 'Telur ajitama', 'description' => null, 'price' => 6000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 10],
+            ['slug' => 'x-chashu', 'kind' => 'topping', 'name' => 'Chashu ayam (2 iris)', 'description' => null, 'price' => 10000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 20],
+            ['slug' => 'x-mie', 'kind' => 'topping', 'name' => 'Tambah mie', 'description' => null, 'price' => 8000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 30],
+            ['slug' => 'x-nori', 'kind' => 'topping', 'name' => 'Nori', 'description' => null, 'price' => 3000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 40],
+            ['slug' => 'x-jagung', 'kind' => 'topping', 'name' => 'Jagung manis', 'description' => null, 'price' => 4000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 50],
+            ['slug' => 'x-keju', 'kind' => 'topping', 'name' => 'Keju leleh', 'description' => null, 'price' => 6000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 60],
+            ['slug' => 'd-ocha', 'kind' => 'minuman', 'name' => 'Ocha dingin', 'description' => null, 'price' => 8000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 70],
+            ['slug' => 'd-lemon', 'kind' => 'minuman', 'name' => 'Lemon tea', 'description' => null, 'price' => 10000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 80],
+            ['slug' => 'd-tarik', 'kind' => 'minuman', 'name' => 'Teh tarik', 'description' => null, 'price' => 12000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 90],
+            ['slug' => 'd-air', 'kind' => 'minuman', 'name' => 'Air mineral', 'description' => null, 'price' => 5000, 'categories' => null, 'spicy' => null, 'image' => null, 'model' => null, 'badge' => null, 'signature' => 0, 'show_in_menu' => 1, 'sort' => 100],
+        ];
+        $now = date('Y-m-d H:i:s');
+        foreach ($rows as $r) {
+            if ($this->db->table('menu_items')->where('slug', $r['slug'])->countAllResults() > 0) {
+                continue;
+            }
+            $this->db->table('menu_items')->insert($r + ['is_available' => 1, 'is_active' => 1, 'created_at' => $now, 'updated_at' => $now]);
+        }
+    }
+}

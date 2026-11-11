@@ -18,6 +18,7 @@ export const SHOP = {
 
 // cat: kuah, pedas, dingin, sayur, instan
 // spicy: angka = level pedas bawaan (0–5) dan pembeli bisa mengubahnya; null = tidak ada pilihan pedas
+// grid: false = tidak tampil di Menu lengkap, hanya di bagian Menu 3D
 export const MENU = [
   { id: 'ramen-spesial', name: 'Ramen Spesial Kumo', price: 49000, cat: ['kuah', 'pedas'], spicy: 2, img: 'img/3d/ramen-spesial.webp', model: 'ramen-spesial', badge: 'Paling laris',
     desc: 'Semua yang terbaik dalam satu mangkuk: sapi iris, jamur, jagung manis, nori, dua telur, cabai, dan kuah pedas gurih.' },
@@ -27,13 +28,13 @@ export const MENU = [
     desc: 'Kuah miso pedas, sapi cincang, jamur shiitake, jagung manis, dan tiga potong telur setengah matang.' },
   { id: 'kari-udang', name: 'Ramen Kari Udang', price: 45000, cat: ['kuah'], spicy: 1, img: 'img/menu/kari-udang.webp', signature: true,
     desc: 'Kuah kari Jepang yang kental, udang goreng tepung, kimchi, bayam, dan telur ajitama.' },
-  { id: 'tori-paitan', name: 'Tori Paitan Jamur', price: 41000, cat: ['kuah'], spicy: 0, img: 'img/3d/tori-paitan.webp', model: 'tori-paitan',
+  { id: 'tori-paitan', grid: false, name: 'Tori Paitan Jamur', price: 41000, cat: ['kuah'], spicy: 0, img: 'img/3d/tori-paitan.webp', model: 'tori-paitan',
     desc: 'Kuah ayam putih yang creamy, ayam panggang, jamur, dua telur rebus, ketumbar, dan wijen hitam.' },
   { id: 'sapi-rempah', name: 'Mi Kuah Sapi Rempah', price: 38000, cat: ['kuah', 'pedas'], spicy: 2, img: 'img/menu/sapi-rempah.webp',
     desc: 'Mi beras, sapi rebus rempah, daun ketumbar, cabai rawit segar, dan kacang sangrai.' },
   { id: 'paitan-ayam', name: 'Paitan Chashu Ayam', price: 36000, cat: ['kuah'], spicy: 0, img: 'img/menu/paitan-ayam.webp',
     desc: 'Kuah ayam kental, chashu ayam panggang berlapis lada, telur ajitama, dan daun bawang.' },
-  { id: 'shoyu-ajitama', name: 'Shoyu Ajitama', price: 33000, cat: ['kuah'], spicy: 0, img: 'img/3d/shoyu-ajitama.webp', model: 'shoyu-ajitama',
+  { id: 'shoyu-ajitama', grid: false, name: 'Shoyu Ajitama', price: 33000, cat: ['kuah'], spicy: 0, img: 'img/3d/shoyu-ajitama.webp', model: 'shoyu-ajitama',
     desc: 'Kuah shoyu kemerahan, chashu ayam, telur ajitama, nori lebar, dan daun bawang.' },
   { id: 'shoyu-nori', name: 'Shoyu Nori', price: 32000, cat: ['kuah', 'pedas'], spicy: 1, img: 'img/menu/shoyu-nori.webp',
     desc: 'Kuah kecap asin bening dengan nori, menma, serpihan cabai, dan telur ajitama.' },
@@ -49,9 +50,9 @@ export const MENU = [
     desc: 'Kuah tomat pedas tanpa daging: teratai goreng, zukini, terong, wortel, tomat ceri, dan telur.' },
   { id: 'hiyashi', name: 'Hiyashi Ramen Dingin', price: 37000, cat: ['dingin'], spicy: null, img: 'img/menu/hiyashi.webp', badge: 'Segar',
     desc: 'Mi dingin di kuah segar berisi es: udang, telur dadar iris, timun, wortel, dan jamur.' },
-  { id: 'shin-bowl', name: 'Shin Ramyun Big Bowl', price: 24000, cat: ['instan', 'pedas'], spicy: null, img: 'img/3d/shin-bowl.webp', model: 'shin-bowl',
+  { id: 'shin-bowl', grid: false, name: 'Shin Ramyun Big Bowl', price: 24000, cat: ['instan', 'pedas'], spicy: null, img: 'img/3d/shin-bowl.webp', model: 'shin-bowl',
     desc: 'Ramen instan Korea versi mangkuk besar, kami seduh di tempat. Bisa ditambah topping.' },
-  { id: 'shin-cup', name: 'Shin Ramyun Cup', price: 18000, cat: ['instan', 'pedas'], spicy: null, img: 'img/3d/shin-cup.webp', model: 'shin-cup',
+  { id: 'shin-cup', grid: false, name: 'Shin Ramyun Cup', price: 18000, cat: ['instan', 'pedas'], spicy: null, img: 'img/3d/shin-cup.webp', model: 'shin-cup',
     desc: 'Ramen instan Korea dalam cup, diseduh di tempat. Pedasnya pedas khas Korea.' },
 ];
 

@@ -167,6 +167,7 @@
             <p>Pesan meja untuk keluarga, teman, atau acara kecil. Isi form ini, lalu kirim lewat WhatsApp. Kami balas untuk konfirmasi.</p>
           </header>
           <form class="res-form reveal" id="res-form" novalidate>
+            <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="row2">
               <label>Nama<input name="name" autocomplete="name" required placeholder="Nama kamu"></label>
               <label>Nomor WhatsApp<input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="08xx-xxxx-xxxx"></label>
@@ -184,6 +185,10 @@
             </fieldset>
             <label>Catatan<textarea name="note" rows="2" placeholder="Contoh: ulang tahun, butuh kursi bayi"></textarea></label>
             <p class="form-error" id="res-error" role="alert" hidden></p>
+            <div class="res-done" id="res-done" role="status" hidden>
+              <p>Reservasi <b></b> tersimpan. <span></span></p>
+              <a class="btn btn-cream btn-sm" target="_blank" rel="noopener">Konfirmasi di WhatsApp</a>
+            </div>
             <button class="btn btn-yellow btn-block" type="submit">Kirim reservasi lewat WhatsApp</button>
           </form>
         </div>
@@ -257,6 +262,14 @@
           <p>Keranjang masih kosong.</p>
           <a class="btn btn-yellow btn-sm" href="#menu" data-close>Pilih ramen</a>
         </div>
+        <div class="cart-done" id="cart-done">
+          <span class="done-badge" aria-hidden="true">✓</span>
+          <h3>Pesanan tersimpan</h3>
+          <p>Kode pesanan <b id="done-code"></b></p>
+          <p class="fine" id="done-text"></p>
+          <a class="btn btn-yellow btn-block" id="done-wa" target="_blank" rel="noopener">Konfirmasi di WhatsApp</a>
+          <button class="btn btn-line btn-block" type="button" data-close>Tutup</button>
+        </div>
         <div class="checkout" id="checkout">
           <fieldset class="seg">
             <legend>Cara terima</legend>
@@ -264,7 +277,9 @@
             <label><input type="radio" name="mode" value="Ambil sendiri"><span>Ambil</span></label>
             <label><input type="radio" name="mode" value="Makan di tempat"><span>Makan di sini</span></label>
           </fieldset>
+          <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label>Nama<input name="name" autocomplete="name" required placeholder="Nama pemesan"></label>
+          <label>Nomor WhatsApp<input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="08xx-xxxx-xxxx"></label>
           <label class="addr">Alamat antar<textarea name="address" rows="2" autocomplete="street-address" placeholder="Jalan, nomor rumah, patokan"></textarea></label>
           <fieldset class="seg">
             <legend>Bayar</legend>

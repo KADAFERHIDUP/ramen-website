@@ -9,8 +9,8 @@ Online di **https://ramen.kadaferhidup.my.id** (GitHub Pages).
 1. **Hero**: judul "Semangkuk ramen hangat penuh rasa" dengan mangkuk ramen 3D yang berputar pelan di tengah judul, uap tipis, dan efek parallax kursor. Di bawahnya ada pita kuning berjalan.
 2. **Ramen andalan**: tiga menu favorit dengan harga dan tombol tambah ke keranjang.
 3. **Kenapa Kumo**: panel krem; mangkuk 3D yang sama muncul lagi di sini bersama tiga alasan.
-4. **Menu lengkap**: 17 menu dengan filter (berkuah, pedas, dingin, tanpa daging, instan Korea), ditambah topping dan minuman.
-5. **Menu 3D**: lima menu dalam 3D yang bisa diputar dengan jari, mouse, atau tombol panah, lalu ditambahkan ke keranjang dari sana.
+4. **Menu lengkap**: 13 menu dengan filter (berkuah, pedas, dingin, tanpa daging), ditambah topping dan minuman.
+5. **Menu 3D**: lima menu dalam 3D yang bisa diputar dengan jari, mouse, atau tombol panah, lalu ditambahkan ke keranjang dari sana. Tori Paitan Jamur, Shoyu Ajitama, dan dua Shin Ramyun hanya tampil di sini (`grid: false` di `js/data.js`).
 6. **Reservasi**: form reservasi meja (tanggal, jam sesuai jam buka, jumlah orang, tempat duduk) yang dikirim ke WhatsApp.
 7. **Info**: jam buka (hari ini ditandai), cara pesan dan bayar, lokasi.
 
@@ -22,6 +22,10 @@ Online di **https://ramen.kadaferhidup.my.id** (GitHub Pages).
 - Label **Buka/Tutup** otomatis menurut jam Asia/Jakarta (Jumat buka setelah salat Jumat).
 - Nama dan alamat pembeli diingat untuk pesanan berikutnya (hanya di perangkat itu).
 - Kalau perangkat tidak mendukung 3D, semua model diganti gambar diam. Bisa dipakai dengan keyboard dan menghormati pengaturan *reduced motion*.
+
+## Backend
+
+Folder `backend/` berisi backend CodeIgniter 4 + MySQL: menu dari database, pesanan dan reservasi tersimpan dengan kode, dan panel admin di `/admin` (dashboard, pesanan, reservasi, kelola menu dengan upload foto dan tombol Habis). Website mendeteksi sendiri apakah backend aktif (`api/health`); kalau tidak, pesanan langsung lewat WhatsApp. Cara memasang ada di [backend/README.md](backend/README.md).
 
 ## Mengubah isi
 
@@ -37,6 +41,7 @@ Semua data ada di `js/data.js`:
 index.html
 css/style.css
 js/app.js        tampilan, keranjang, reservasi, jam buka
+js/api.js        penghubung ke backend (opsional)
 js/data.js       data kedai dan menu
 js/scene3d.js    satu kanvas WebGL untuk semua objek 3D
 js/models.js     daftar model 3D, kredit, dan penyesuaian warna
@@ -45,6 +50,7 @@ vendor/          three.js r188 (tidak perlu internet)
 models/          5 model 3D (.glb) yang sudah dioptimasi
 img/menu/        14 foto menu tanpa background (.webp)
 img/3d/          gambar diam dari model 3D
+backend/         backend CodeIgniter 4 (lihat backend/README.md)
 ```
 
 ## Menjalankan di komputer
