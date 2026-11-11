@@ -43,7 +43,7 @@ export async function loadGLB(url, { onProgress } = {}) {
   // gambar dibaca sekali, tekstur dibuat per pemakaian (warna memakai sRGB, data memakai linear)
   const bitmaps = await Promise.all((json.images || []).map(im => {
     const { bytes } = view(im.bufferView);
-    return createImageBitmap(new Blob([bytes], { type: im.mimeType }), { imageOrientation: 'none', premultiplyAlpha: 'none' });
+    return decodeImage(new Blob([bytes], { type: im.mimeType }));
   }));
   const texture = (info, srgb) => {
     if (!info) return null;
@@ -134,6 +134,24 @@ export async function loadGLB(url, { onProgress } = {}) {
   (json.scenes[json.scene || 0].nodes || []).forEach(i => scene.add(build(i)));
   scene.userData.asset = json.asset;
   return scene;
+}
+
+// Safari (iPhone/iPad/Mac) punya masalah dengan ImageBitmap di WebGL dan menolak sebagian opsinya,
+// jadi di Safari gambar dibaca lewat elemen <img> biasa. Browser lain memakai createImageBitmap.
+const SAFARI = /^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent) || /iP(hone|ad|od)/.test(navigator.userAgent);
+async function decodeImage(blob) {
+  if (!SAFARI && !window.__glbUseImg && typeof createImageBitmap === 'function') {
+    try { return await createImageBitmap(blob); } catch { /* lanjut ke <img> */ }
+  }
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = new Image();
+    img.src = url;
+    await (img.decode ? img.decode() : new Promise((ok, no) => { img.onload = ok; img.onerror = no; }));
+    return img;
+  } finally {
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
 }
 
 // unduh dengan laporan kemajuan (0..1) kalau server memberi ukuran file
