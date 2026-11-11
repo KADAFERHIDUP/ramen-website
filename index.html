@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kumo Ramen · Ramen 3D di Lhokseumawe</title>
+  <meta name="description" content="Kumo Ramen di Lhokseumawe: kaldu dimasak 12 jam, mie segar setiap pagi, level pedas 0 sampai 5. Lihat menunya dalam 3D, pesan lewat WhatsApp, atau reservasi meja.">
+  <meta name="theme-color" content="#0d4537">
+  <meta property="og:title" content="Kumo Ramen · Lhokseumawe">
+  <meta property="og:description" content="Ramen kuah penuh rasa. Lihat menunya dalam 3D lalu pesan lewat WhatsApp.">
+  <meta property="og:image" content="img/3d/ramen-spesial.webp">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="modulepreload" href="vendor/three.module.js">
+  <link rel="preload" href="models/ramen-spesial.glb" as="fetch" crossorigin>
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+</head>
+<body>
+  <a class="skip" href="#menu">Langsung ke menu</a>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Kumo Ramen, ke atas">
+        <svg viewBox="0 0 64 40" aria-hidden="true"><path d="M14 36a12 12 0 0 1-1.5-23.9A15 15 0 0 1 41 8.6 11 11 0 0 1 55 19a8.5 8.5 0 0 1-3 17H14z" fill="currentColor"/><path d="M19 25c4 3 9 3 13 0s9-3 13 0" fill="none" stroke="#0d4537" stroke-width="3" stroke-linecap="round"/></svg>
+        <span>kumo<small>ラーメン</small></span>
+      </a>
+      <nav class="links" id="links" aria-label="Navigasi utama">
+        <a href="#andalan">Andalan</a>
+        <a href="#menu">Menu</a>
+        <a href="#tiga-d">Menu 3D</a>
+        <a href="#kenapa">Kenapa Kumo</a>
+        <a href="#reservasi">Reservasi</a>
+      </nav>
+      <span class="open" id="open-badge" hidden><i></i><span></span></span>
+      <button class="btn btn-cream nav-cart" type="button" data-open-cart aria-label="Buka keranjang">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="currentColor"/><circle cx="17" cy="20.5" r="1.4" fill="currentColor"/></svg>
+        <span class="nav-cart-label">Keranjang</span><b class="count" data-count>0</b>
+      </button>
+      <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="links" aria-label="Buka menu navigasi"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="wrap hero-in">
+        <div class="hero-stage">
+          <h1 class="hero-title" aria-label="Semangkuk ramen hangat penuh rasa">
+            <span>Semangkuk</span>
+            <span class="split"><em>ramen</em><i class="gap" aria-hidden="true"></i><em>hangat</em></span>
+            <span>penuh rasa</span>
+          </h1>
+          <div class="hero-spot spot" id="hero-spot" aria-hidden="true">
+            <img class="ph-img" src="img/3d/ramen-spesial.webp" alt="" width="720" height="720" fetchpriority="high">
+          </div>
+        </div>
+        <p class="hero-lead">Kaldu dimasak 12 jam, mie segar setiap pagi, dan level pedas yang kamu atur sendiri. Makan di tempat, ambil, atau diantar ke rumah di Lhokseumawe.</p>
+        <div class="hero-cta">
+          <a class="btn btn-yellow" href="#menu">Lihat menu &amp; pesan</a>
+          <a class="btn btn-line" href="#reservasi">Reservasi meja</a>
+        </div>
+        <ul class="hero-facts">
+          <li><b>100%</b> halal</li>
+          <li><b>0–5</b> level pedas</li>
+          <li><b>12 jam</b> kaldu</li>
+        </ul>
+      </div>
+      <div class="cloud cloud-bottom" aria-hidden="true"></div>
+      <div class="ribbon" aria-hidden="true">
+        <div class="ribbon-track">
+          <span>Kaldu 12 jam</span><span>Mie segar tiap pagi</span><span>Telur ajitama</span><span>100% halal</span><span>Pedas level 0–5</span><span>Antar se-Lhokseumawe</span>
+          <span>Kaldu 12 jam</span><span>Mie segar tiap pagi</span><span>Telur ajitama</span><span>100% halal</span><span>Pedas level 0–5</span><span>Antar se-Lhokseumawe</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANDALAN -->
+    <section class="sec andalan" id="andalan">
+      <div class="wrap">
+        <header class="sec-head reveal">
+          <h2>Ramen andalan<br>kami</h2>
+          <p>Tiga mangkuk yang paling sering dipesan ulang. Semuanya bisa diatur level pedasnya.</p>
+        </header>
+        <div class="sig-grid" id="sig-grid"></div>
+        <div class="center reveal"><a class="btn btn-line btn-sm" href="#menu">Lihat semua menu <span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <!-- KENAPA -->
+    <section class="panel kenapa" id="kenapa">
+      <div class="cloud cloud-top" aria-hidden="true"></div>
+      <div class="panel-in">
+        <div class="wrap kenapa-grid">
+          <h2 class="kenapa-title reveal">Kenapa orang<br>balik lagi ke Kumo</h2>
+          <p class="kenapa-intro reveal">Kami kecil dan sengaja begitu. Menu tidak banyak, tapi tiap mangkuk dibuat sendiri dari kaldu sampai telurnya.</p>
+          <div class="why-spot spot" id="why-spot" aria-hidden="true">
+            <img class="ph-img" src="img/3d/ramen-spesial.webp" alt="" width="720" height="720" loading="lazy">
+          </div>
+          <ol class="reasons">
+            <li class="reveal">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 14h22a11 11 0 0 1-22 0zM9 25h14M11 9c0-2 2-2 2-4M16 9c0-2 2-2 2-4M21 9c0-2 2-2 2-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+              <div><h3>Kaldu yang sabar</h3><p>Tulang ayam dan sapi direbus pelan 12 jam sejak subuh. Tidak pakai kaldu bubuk.</p></div>
+            </li>
+            <li class="reveal">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 8c6 0 6 4 10 4s4-4 10-4M6 15c6 0 6 4 10 4s4-4 10-4M6 22c6 0 6 4 10 4s4-4 10-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+              <div><h3>Mie dibuat tiap pagi</h3><p>Adonan diuleni dan dipotong di dapur kami sendiri, jadi mienya kenyal dan tidak cepat lembek.</p></div>
+            </li>
+            <li class="reveal">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M20 6c-1 2 0 4 2 5M22 11c4 1 6 5 4 10-3 6-12 7-17 5 5-2 8-6 9-11 0-2 1-4 4-4z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div><h3>Pedasnya kamu yang atur</h3><p>Dari level 0 untuk anak-anak sampai level 5 untuk yang berani. Pilih saat memesan.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="cloud cloud-bottom cream" aria-hidden="true"></div>
+    </section>
+
+    <!-- MENU -->
+    <section class="sec menu" id="menu">
+      <div class="wrap">
+        <header class="sec-head reveal">
+          <h2>Menu lengkap</h2>
+          <p>Ketuk <b>+</b> untuk menambah ke keranjang. Pesanan dikirim ke WhatsApp kami, lalu kami konfirmasi total dan ongkirnya.</p>
+        </header>
+        <div class="chips" id="chips" role="tablist" aria-label="Kategori menu"></div>
+        <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+        <div class="extras reveal" id="extras"></div>
+      </div>
+    </section>
+
+    <!-- 3D -->
+    <section class="sec tiga" id="tiga-d">
+      <div class="wrap">
+        <header class="sec-head reveal">
+          <h2>Putar dulu<br>sebelum pesan</h2>
+          <p>Lima menu kami dalam 3D. Geser untuk memutar, lalu tambahkan ke keranjang dari sini.</p>
+        </header>
+        <div class="viewer reveal">
+          <div class="stage" id="stage" tabindex="0" aria-label="Tampilan 3D. Geser atau pakai tombol panah untuk memutar.">
+            <div class="viewer-spot" id="viewer-spot"></div>
+            <img class="stage-img" id="stage-img" src="img/3d/ramen-spesial.webp" alt="" width="720" height="720" loading="lazy">
+            <div class="loader" id="loader" hidden><span></span><b>Memuat model 3D…</b></div>
+            <span class="hint" id="hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12h8M5 9l-3 3 3 3M19 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Geser untuk memutar</span>
+          </div>
+          <div class="viewer-side">
+            <div class="tabs" id="model-tabs" role="tablist" aria-label="Pilih menu 3D"></div>
+            <div class="viewer-info" id="viewer-info" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESERVASI -->
+    <section class="panel reservasi" id="reservasi">
+      <div class="cloud cloud-top" aria-hidden="true"></div>
+      <div class="panel-in">
+        <img class="sticker s1" src="img/menu/ilustrasi-katsu.webp" alt="" width="720" height="720" loading="lazy">
+        <img class="sticker s2" src="img/menu/ilustrasi-sapi.webp" alt="" width="720" height="720" loading="lazy">
+        <svg class="leaf l1" viewBox="0 0 60 30" aria-hidden="true"><path d="M2 28C14 6 40 0 58 4 48 22 24 32 2 28z" fill="#3f9b4f"/><path d="M4 27C20 18 36 10 56 5" stroke="#2c7a3b" stroke-width="2" fill="none"/></svg>
+        <svg class="leaf l2" viewBox="0 0 60 30" aria-hidden="true"><path d="M2 28C14 6 40 0 58 4 48 22 24 32 2 28z" fill="#3f9b4f"/><path d="M4 27C20 18 36 10 56 5" stroke="#2c7a3b" stroke-width="2" fill="none"/></svg>
+        <div class="wrap narrow">
+          <header class="sec-head reveal">
+            <h2>Ayo makan<br>bareng di Kumo</h2>
+            <p>Pesan meja untuk keluarga, teman, atau acara kecil. Isi form ini, lalu kirim lewat WhatsApp. Kami balas untuk konfirmasi.</p>
+          </header>
+          <form class="res-form reveal" id="res-form" novalidate>
+            <div class="row2">
+              <label>Nama<input name="name" autocomplete="name" required placeholder="Nama kamu"></label>
+              <label>Nomor WhatsApp<input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="08xx-xxxx-xxxx"></label>
+            </div>
+            <div class="row3">
+              <label>Tanggal<input name="date" type="date" required></label>
+              <label>Jam<select name="time" required></select></label>
+              <label>Jumlah orang<select name="people" required></select></label>
+            </div>
+            <fieldset class="seg">
+              <legend>Tempat duduk</legend>
+              <label><input type="radio" name="area" value="Dalam (ber-AC)" checked><span>Dalam</span></label>
+              <label><input type="radio" name="area" value="Teras"><span>Teras</span></label>
+              <label><input type="radio" name="area" value="Lesehan"><span>Lesehan</span></label>
+            </fieldset>
+            <label>Catatan<textarea name="note" rows="2" placeholder="Contoh: ulang tahun, butuh kursi bayi"></textarea></label>
+            <p class="form-error" id="res-error" role="alert" hidden></p>
+            <button class="btn btn-yellow btn-block" type="submit">Kirim reservasi lewat WhatsApp</button>
+          </form>
+        </div>
+      </div>
+      <div class="cloud cloud-bottom cream" aria-hidden="true"></div>
+    </section>
+
+    <!-- INFO -->
+    <section class="sec info">
+      <div class="wrap info-grid">
+        <div class="info-card reveal">
+          <h3>Jam buka</h3>
+          <ul class="hours" id="hours"></ul>
+        </div>
+        <div class="info-card reveal">
+          <h3>Pesan &amp; antar</h3>
+          <p>Antar ke seluruh Lhokseumawe. Ongkir mengikuti jarak dan kami sebutkan sebelum pesanan dimasak.</p>
+          <p class="pay">Bayar: QRIS, transfer bank, atau tunai.</p>
+        </div>
+        <div class="info-card reveal">
+          <h3>Lokasi</h3>
+          <p id="loc-text"></p>
+          <a class="btn btn-line btn-sm" id="wa-link" target="_blank" rel="noopener">Chat WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M14 36a12 12 0 0 1-1.5-23.9A15 15 0 0 1 41 8.6 11 11 0 0 1 55 19a8.5 8.5 0 0 1-3 17H14z" fill="currentColor"/><path d="M19 25c4 3 9 3 13 0s9-3 13 0" fill="none" stroke="#0d4537" stroke-width="3" stroke-linecap="round"/></svg><span>kumo<small>ラーメン</small></span></a>
+        <p>Kedai ramen kecil di Lhokseumawe. Kumo artinya awan, seperti uap yang naik dari mangkuk yang baru disajikan.</p>
+      </div>
+      <div>
+        <h4>Menu</h4>
+        <ul><li><a href="#andalan">Andalan</a></li><li><a href="#menu">Menu lengkap</a></li><li><a href="#tiga-d">Menu 3D</a></li><li><a href="#reservasi">Reservasi</a></li></ul>
+      </div>
+      <div>
+        <h4>Kontak</h4>
+        <ul id="foot-contact"></ul>
+      </div>
+      <div>
+        <h4>Jam buka</h4>
+        <p id="foot-hours"></p>
+      </div>
+    </div>
+    <div class="wrap foot-note">
+      <p>Model 3D (lisensi <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, diubah ukuran dan warnanya): <span id="credits"></span>.</p>
+      <p>© <span id="year">2026</span> Kumo Ramen · Dibuat oleh Ahmad Umraithi</p>
+    </div>
+  </footer>
+
+  <!-- tombol keranjang mengambang (HP) -->
+  <button class="fab" type="button" data-open-cart aria-label="Buka keranjang">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20.5" r="1.4" fill="currentColor"/><circle cx="17" cy="20.5" r="1.4" fill="currentColor"/></svg>
+    <b class="count" data-count>0</b><span class="fab-total" id="fab-total"></span>
+  </button>
+
+  <!-- KERANJANG -->
+  <dialog class="cart" id="cart" aria-labelledby="cart-title">
+    <form method="dialog" class="cart-in" id="cart-form" novalidate>
+      <header class="cart-head">
+        <h2 id="cart-title">Keranjang</h2>
+        <button class="x" type="button" data-close aria-label="Tutup keranjang">×</button>
+      </header>
+      <div class="cart-body">
+        <ul class="cart-list" id="cart-list"></ul>
+        <div class="cart-empty" id="cart-empty">
+          <img src="img/menu/shoyu-klasik.webp" alt="" width="120" height="120" loading="lazy">
+          <p>Keranjang masih kosong.</p>
+          <a class="btn btn-yellow btn-sm" href="#menu" data-close>Pilih ramen</a>
+        </div>
+        <div class="checkout" id="checkout">
+          <fieldset class="seg">
+            <legend>Cara terima</legend>
+            <label><input type="radio" name="mode" value="Diantar" checked><span>Diantar</span></label>
+            <label><input type="radio" name="mode" value="Ambil sendiri"><span>Ambil</span></label>
+            <label><input type="radio" name="mode" value="Makan di tempat"><span>Makan di sini</span></label>
+          </fieldset>
+          <label>Nama<input name="name" autocomplete="name" required placeholder="Nama pemesan"></label>
+          <label class="addr">Alamat antar<textarea name="address" rows="2" autocomplete="street-address" placeholder="Jalan, nomor rumah, patokan"></textarea></label>
+          <fieldset class="seg">
+            <legend>Bayar</legend>
+            <label><input type="radio" name="pay" value="QRIS" checked><span>QRIS</span></label>
+            <label><input type="radio" name="pay" value="Transfer"><span>Transfer</span></label>
+            <label><input type="radio" name="pay" value="Tunai"><span>Tunai</span></label>
+          </fieldset>
+          <label>Catatan<textarea name="note" rows="2" placeholder="Contoh: kuah dipisah, tanpa daun bawang"></textarea></label>
+        </div>
+      </div>
+      <footer class="cart-foot" id="cart-foot">
+        <div class="sum"><span>Subtotal</span><b id="cart-total">Rp 0</b></div>
+        <p class="fine" id="cart-fine">Ongkir dihitung sesuai jarak dan dikonfirmasi lewat WhatsApp.</p>
+        <p class="form-error" id="cart-error" role="alert" hidden></p>
+        <button class="btn btn-yellow btn-block" type="submit">Kirim pesanan lewat WhatsApp</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <canvas id="gl" class="gl" aria-hidden="true"></canvas>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
