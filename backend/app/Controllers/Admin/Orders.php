@@ -57,7 +57,7 @@ class Orders extends BaseController
         fputcsv($out, ['Kode', 'Tanggal', 'Isi pesanan', 'Porsi', 'Subtotal', 'Nama', 'WhatsApp', 'Cara terima', 'Alamat', 'Bayar', 'Catatan', 'Status'], ';');
         foreach ($rows as $o) {
             $isi = implode(', ', array_map(static fn ($l) => $l['name'] . ' x' . $l['qty'] . ($l['level'] !== null ? ' (lv ' . $l['level'] . ')' : ''), $o['lines']));
-            fputcsv($out, [$o['code'], $o['created_at'], $isi, $o['items'], $o['subtotal'], $o['name'], $o['phone'], $cfg->modes[$o['mode']] ?? $o['mode'], $o['address'], $o['pay'], $o['note'], $cfg->orderStatuses[$o['status']] ?? $o['status']], ';');
+            fputcsv($out, csv_safe([$o['code'], $o['created_at'], $isi, $o['items'], $o['subtotal'], $o['name'], $o['phone'], $cfg->modes[$o['mode']] ?? $o['mode'], $o['address'], $o['pay'], $o['note'], $cfg->orderStatuses[$o['status']] ?? $o['status']]), ';');
         }
         rewind($out);
 
